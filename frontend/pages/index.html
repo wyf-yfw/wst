@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek Art - AI文生图平台</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <div class="header">
+            <div class="header-title">文生图创作平台</div>
+            <div class="header-actions">
+                <button class="header-btn">
+                    <i class="fas fa-download"></i> 导出
+                </button>
+                <button class="header-btn">
+                    <i class="fas fa-share-alt"></i> 分享
+                </button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-keyboard"></i> 输入描述
+                    </div>
+                    <textarea class="prompt-input" placeholder="请输入您想要生成的图像描述...">一只坐在咖啡馆里看书的熊猫，周围是巴黎街景，卡通风格</textarea>
+
+                    <div class="card-title" style="margin-top: 20px;">
+                        <i class="fas fa-paint-brush"></i> 选择风格
+                    </div>
+                    <div class="style-selector">
+                        <div class="style-btn active">写实风格</div>
+                        <div class="style-btn">卡通风格</div>
+                        <div class="style-btn">油画风格</div>
+                        <div class="style-btn">水彩风格</div>
+                        <div class="style-btn">赛博朋克</div>
+                        <div class="style-btn">中国风</div>
+                        <div class="style-btn">像素艺术</div>
+                        <div class="style-btn">3D渲染</div>
+                    </div>
+
+                    <button class="generate-btn" id="generateBtn">
+                        <i class="fas fa-magic"></i> 生成图像
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-image"></i> 生成结果
+                    </div>
+                    <div class="result-container">
+                        <div class="result-placeholder" id="placeholder">
+                            <i class="fas fa-cloud"></i>
+                            <h3>等待生成图像</h3>
+                            <p>输入描述并点击"生成图像"按钮开始创作</p>
+                        </div>
+                        <div class="loading" id="loading">
+                            <div class="spinner"></div>
+                            <p>AI正在创作中，请稍候...</p>
+                        </div>
+                        <img src="" class="result-image" id="resultImage">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/navbar.js"></script>
+    <script src="../js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek Art - 生成历史</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <div class="header">
+            <div class="header-title">生成历史</div>
+            <div class="header-actions">
+                <button class="header-btn">
+                    <i class="fas fa-download"></i> 批量导出
+                </button>
+                <button class="header-btn">
+                    <i class="fas fa-trash"></i> 清空历史
+                </button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="history-grid" id="historyGrid">
+                <!-- 历史图片将通过JavaScript动态加载 -->
+                <div class="loading-history">
+                    <div class="spinner"></div>
+                    <p>正在加载生成历史...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/navbar.js"></script>
+    <script src="../js/history.js"></script>
+</body>
+</html>
