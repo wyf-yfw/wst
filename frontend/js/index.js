@@ -1,42 +1,9 @@
 // 确保DOM完全加载后执行
 document.addEventListener('DOMContentLoaded', function() {
-  // 侧边栏折叠功能
-  document.querySelector('.toggle-btn').addEventListener('click', function() {
-    const sidebar = document.querySelector('.sidebar');
-    sidebar.classList.toggle('collapsed');
-
-    const icon = this.querySelector('i');
-    if (sidebar.classList.contains('collapsed')) {
-        icon.classList.remove('fa-angle-left');
-        icon.classList.add('fa-angle-right');
-    } else {
-        icon.classList.remove('fa-angle-right');
-        icon.classList.add('fa-angle-left');
-    }
-  });
-
-  // 模型选择功能
-  const modelItems = document.querySelectorAll('.model-item');
-  modelItems.forEach(item => {
-    item.addEventListener('click', function() {
-      modelItems.forEach(model => model.classList.remove('active'));
-      this.classList.add('active');
-    });
-  });
-
-  // 页面导航功能
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach(item => {
-    item.addEventListener('click', function() {
-      navItems.forEach(nav => nav.classList.remove('active'));
-      this.classList.add('active');
-    });
-  });
-
-  // 风格选择按钮
+  // 风格选择按钮功能
   const styleButtons = document.querySelectorAll('.style-btn');
   styleButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       styleButtons.forEach(btn => btn.classList.remove('active'));
       this.classList.add('active');
     });
@@ -49,10 +16,27 @@ document.addEventListener('DOMContentLoaded', function() {
   const resultImage = document.getElementById('resultImage');
 
   generateBtn.addEventListener('click', async function() {
-    const promptInput = document.querySelector('.prompt-input').value;
+    let promptInput = document.querySelector('.prompt-input').value;
     if (!promptInput.trim()) {
       alert('请输入图像描述');
       return;
+    }
+
+    // 根据选择的风格添加前缀
+    const activeStyle = document.querySelector('.style-btn.active').textContent;
+   const stylePrefixes = {
+  '写实风格': 'ultra-high-definition, photorealistic, natural lighting, realistic textures, professional photography,',
+  '卡通风格': 'Disney-style cartoon, soft colors, clean outlines, whimsical characters, animation-style lighting,',
+  '油画风格': 'classic oil painting style, thick brush strokes, rich texture, Renaissance lighting, canvas texture, chiaroscuro,',
+  '水彩风格': 'watercolor painting style, soft pastel colors, translucent layers, flowing brushstrokes, artistic background,',
+  '赛博朋克': 'cyberpunk style, neon lights, futuristic cityscape, high-tech, dystopian atmosphere, dark tones, reflective surfaces,',
+  '中国风': 'traditional Chinese ink painting style, black ink brushwork, minimalist landscape, ancient Chinese aesthetics, rice paper texture,',
+  '像素艺术': '8-bit pixel art style, retro video game graphics, blocky resolution, limited color palette, nostalgic vibe,',
+  '3D渲染': '3D render style, Blender engine, ray tracing, high-poly model, realistic lighting and shadows, physically-based rendering,'
+};
+
+    if (stylePrefixes[activeStyle]) {
+      promptInput = stylePrefixes[activeStyle] + promptInput;
     }
 
     // 显示加载状态
@@ -64,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     try {
       // 调用后端API
-      const response = await fetch('http://127.0.0.1:5001/generate', {
+      const response = await fetch('/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // 获取生成的图像
-      const imageUrl = `http://127.0.0.1:5001${data.image_url}`;
+      const imageUrl = `/api${data.image_url}`;
       resultImage.src = imageUrl;
 
       // 隐藏加载状态，显示结果
@@ -90,8 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
       generateBtn.disabled = false;
       generateBtn.innerHTML = '<i class="fas fa-magic"></i> 生成图像';
 
-      // 添加到历史记录
-      addToHistory(promptInput, imageUrl);
     } catch (error) {
       console.error('生成错误:', error);
       alert(error.message);
@@ -99,42 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
       placeholder.style.display = 'flex';
       generateBtn.disabled = false;
       generateBtn.innerHTML = '<i class="fas fa-magic"></i> 生成图像';
-    }
-  });
-
-  // 添加到历史记录
-  function addToHistory(prompt, imageUrl) {
-    const historyList = document.querySelector('.history-list');
-    const historyItem = document.createElement('div');
-    historyItem.className = 'history-item';
-    historyItem.innerHTML = `
-      <div class="history-image" style="background-image: url('${imageUrl}'); background-size: cover;"></div>
-      <div class="history-prompt">${prompt}</div>
-    `;
-    historyList.insertBefore(historyItem, historyList.firstChild);
-  }
-
-  // 历史记录点击事件
-  document.querySelectorAll('.history-item').forEach(item => {
-    item.addEventListener('click', function() {
-      const image = this.querySelector('.history-image');
-      const bgImage = window.getComputedStyle(image).backgroundImage;
-
-      if (bgImage && bgImage !== 'none') {
-        // 提取URL
-        const imgUrl = bgImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
-        resultImage.src = imgUrl;
-        placeholder.style.display = 'none';
-        loading.style.display = 'none';
-        resultImage.style.display = 'block';
-      }
-    });
-  });
-
-  // 清空历史记录
-  document.querySelector('.clear-history').addEventListener('click', function() {
-    if (confirm('确定要清空所有历史记录吗？')) {
-      document.querySelector('.history-list').innerHTML = '';
     }
   });
 });
