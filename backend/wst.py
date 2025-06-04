@@ -56,10 +56,10 @@ def generate_image():
 @app.route('/get_image/<filename>', methods=['GET'])
 def get_image(filename):
     try:
-        return send_file(f"outputs/{filename}", mimetype='image/png')
+        return send_file(f"..\\outputs\\{filename}", mimetype='image/png')
     except FileNotFoundError:
         return jsonify({"error": "Image not found"}), 404
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=5000)
