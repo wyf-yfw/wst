@@ -5,7 +5,7 @@ import io
 import os
 import uuid
 from flask_cors import CORS  # 添加这行
-
+from translate import translate  # 假设translate.py在同一目录下
 app = Flask(__name__)
 CORS(app)  # 添加这行
 
@@ -36,7 +36,7 @@ def generate_image():
     try:
         # 打印接收到的prompt
         print(f"Received prompt: {prompt}")
-
+        prompt = translate(prompt)  # 翻译为英文
         # 生成图像
         image = pipe(prompt, num_inference_steps=4, guidance_scale=0.0).images[0]
 
